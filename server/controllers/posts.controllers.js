@@ -66,3 +66,20 @@ module.exports.deletePost = (req, res) => {
     res.status(500).json({ msg: "Error, please try later.", error });
   }
 };
+
+module.exports.getPostByAuthor = (req, res) => {
+  try {
+    const { author } = req.params;
+
+    const query = `SELECT * FROM posts WHERE author ILIKE '${author}'`;
+    db.query(query, (error, result) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).json({ msg: "Error, please try later.", error });
+      }
+      res.status(200).json({ count: result.rowCount, posts: result.rows });
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error, please try later.", error });
+  }
+};
