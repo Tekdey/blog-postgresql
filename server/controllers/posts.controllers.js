@@ -11,7 +11,7 @@ module.exports.createPosts = (req, res) => {
     };
     db.query(query, (error) => {
       if (error) {
-        res.status(500).json({ msg: "Error, please try later.", error });
+        return res.status(500).json({ msg: "Error, please try later.", error });
       }
       res.status(200).send("Post created.");
     });
@@ -25,9 +25,26 @@ module.exports.getAllPosts = (req, res) => {
     const query = "SELECT * FROM posts";
     db.query(query, (error, result) => {
       if (error) {
-        res.status(500).json({ msg: "Error, please try later.", error });
+        return res.status(500).json({ msg: "Error, please try later.", error });
       }
       res.status(200).json({ count: result.rowCount, posts: result.rows });
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error, please try later.", error });
+  }
+};
+
+module.exports.updatePost = (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, body, tags } = req.body;
+
+    const query = `UPDATE posts SET title='${title}', body='${body}', tags='${tags}', date_of_creation='${formattedDate()}' WHERE id = ${id}`;
+    db.query(query, (error) => {
+      if (error) {
+        return res.status(500).json({ msg: "Error, please try later.", error });
+      }
+      res.status(200).send("Post updated");
     });
   } catch (error) {
     res.status(500).json({ msg: "Error, please try later.", error });
