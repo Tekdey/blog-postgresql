@@ -50,3 +50,19 @@ module.exports.updatePost = (req, res) => {
     res.status(500).json({ msg: "Error, please try later.", error });
   }
 };
+
+module.exports.deletePost = (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const query = `DELETE FROM posts WHERE id = ${id}`;
+    db.query(query, (error) => {
+      if (error) {
+        return res.status(500).json({ msg: "Error, please try later.", error });
+      }
+      res.status(200).send("Post deleted");
+    });
+  } catch (error) {
+    res.status(500).json({ msg: "Error, please try later.", error });
+  }
+};
