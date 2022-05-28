@@ -10,3 +10,9 @@ export const getAllPost = async () => {
     });
   return data;
 };
+export const deletePost = async (id, refetch) => {
+  await fetch(constants.deletePost + id, {
+    method: "DELETE",
+  });
+  refetch();
+};

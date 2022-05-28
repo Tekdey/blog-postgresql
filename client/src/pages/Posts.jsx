@@ -11,12 +11,8 @@ const Posts = () => {
     const  [form, setForm] = useState(false)
 
     const queryKeys = ["posts"]
-    const {data, isFetching} = useQuery(queryKeys, () => getAllPost())
+    const {data, refetch, isFetching} = useQuery(queryKeys, () => getAllPost())
     const posts = data || []
-
-        /**
-         * Todo - apprendre plus sur react-query
-         */
 
   return (
       <motion.div className="flex flex-col bg-white w-full lg:w-2/3 h-full pb-24" variants={variants.V_MainContainer} initial="initial" animate="animate" exit="exit">
@@ -50,6 +46,8 @@ const Posts = () => {
                         key={index}
                         className="flex flex-col items-center drop-shadow-lg bg-white px-6 rounded-xl pb-2"
                         variants={variants.V_ArticlePost} initial="initial" animate="animate" custom={index}>
+                            <span onClick={() => deletePost(post.id, refetch)} 
+                            className="self-end cursor-pointer">X</span>
                         <h1 className="text-xl font-bold p-4">{post.title}</h1>
                         <p className="text-justify leading-loose">{post.body}</p>
                         <div className="w-full h-96 object-fill rounded-lg my-2" style={{
