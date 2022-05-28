@@ -9,6 +9,9 @@
     html{
         font-family: 'Poppins', sans-serif;
     }
+    #root{
+        @apply w-full flex justify-center
+    }
     body{
         @apply bg-slate-100 w-full flex flex-col items-center
     }
