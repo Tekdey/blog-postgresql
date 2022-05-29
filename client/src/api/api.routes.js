@@ -1,18 +1,19 @@
 import * as constants from "../constants/apiRoutes";
+import axios from "axios";
 
-export const getAllPost = async () => {
-  const data = await fetch(constants.getAllPost, {
-    method: "GET",
-  })
-    .then((res) => res.json())
-    .then((response) => {
-      return response;
-    });
-  return data;
-};
+const api = axios.create({
+  baseURL: "http://localhost:5000/api",
+});
+
+export const getAllPost = async () =>
+  await api.get(constants.getAllPost).then((response) => response);
+
 export const deletePost = async (id, refetch) => {
-  await fetch(constants.deletePost + id, {
-    method: "DELETE",
-  });
+  await api.delete(constants.deletePost + id);
+  refetch();
+};
+
+export const createPost = async (formData, refetch) => {
+  await api.post(constants.createPost, formData);
   refetch();
 };
