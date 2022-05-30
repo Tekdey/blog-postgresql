@@ -54,7 +54,6 @@ const Posts = () => {
         return true
     }
     
-    console.log(formData);
   return (
       <motion.div className="flex flex-col bg-white w-full lg:w-2/3 h-full pb-24" variants={variants.V_MainContainer} initial="initial" animate="animate" exit="exit">
         <button onClick={() => setForm((_) => !_)} className="p-5">Comment !</button>

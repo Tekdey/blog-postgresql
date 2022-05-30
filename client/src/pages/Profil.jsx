@@ -13,7 +13,7 @@ const Profil = () => {
         followers: false
     })
     const queryKey = ['user', id]
-    const {data: user} = useQuery(queryKey, () => getPostByAuthor(id))
+    const {data: user, refetch} = useQuery(queryKey, () => getPostByAuthor(id))
 
     const contextProps = {
         id: id,
@@ -24,7 +24,7 @@ const Profil = () => {
       <div className="w-screen h-screen">
         <div className="flex h-full w-full bg-white">
           <div className="flex flex-col w-7/12">
-             <Outlet context={[contextProps, setDetails]}  />
+             <Outlet context={[contextProps, setDetails, refetch]}  />
           </div>
             <div className="h-full w-5/12">
                     <div 
