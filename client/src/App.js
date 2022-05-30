@@ -3,6 +3,8 @@ import Posts from "./pages/Posts";
 import Profil from "./pages/Profil";
 import { useLocation, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import UserProfile from "./components/UserProfile";
+import UserAllPosts from "./components/UserAllPosts";
 
 const App = () => {
   const location = useLocation();
@@ -10,7 +12,10 @@ const App = () => {
     <AnimatePresence exitBeforeEnter>
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Posts />} />
-        <Route path="/profil/:id" element={<Profil />} />
+        <Route element={<Profil />}>
+          <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/profile/:id/posts" element={<UserAllPosts />} />
+        </Route>
       </Routes>
     </AnimatePresence>
   );

@@ -8,11 +8,13 @@ const api = axios.create({
 export const getAllPost = async () =>
   await api.get(constants.getAllPost).then((response) => response);
 
+export const getPostByAuthor = async (author) =>
+  await api.get("/posts/" + author).then((response) => response);
+
 export const deletePost = async (id, refetch) => {
   await api.delete(constants.deletePost + id);
   refetch();
 };
-
 export const createPost = async (formData, refetch) => {
   await api.post(constants.createPost, formData);
   refetch();
