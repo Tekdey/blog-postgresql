@@ -20,9 +20,20 @@ module.exports.createPosts = (req, res) => {
   }
 };
 
-module.exports.getAllPosts = (req, res) => {
+module.exports.getPost = (req, res) => {
   try {
-    const query = "SELECT * FROM posts";
+    let query = "";
+    const { author, id } = req.query;
+
+    if (author || id) {
+      if (id) {
+        query = `SELECT * FROM posts WHERE id=${id}`;
+      } else if (author) {
+        query = `SELECT * FROM posts WHERE author='${author}'`;
+      }
+    } else {
+      query = "SELECT * FROM posts";
+    }
     db.query(query, (error, result) => {
       if (error) {
         return res.status(500).json({ msg: "Error, please try later.", error });
@@ -39,12 +50,12 @@ module.exports.updatePost = (req, res) => {
     const { id } = req.params;
     const { title, body, tags } = req.body;
 
-    const query = `UPDATE posts SET title='${title}', body='${body}', tags='${tags}', date_of_creation='${formattedDate()}' WHERE id = ${id}`;
-    db.query(query, (error) => {
+    const query = `UPDATE posts SET title='${title}', body='${body}', tags='${tags}', date_of_creation='${formattedDate()}' WHERE id = ${id} RETURNING *`;
+    db.query(query, (error, result) => {
       if (error) {
         return res.status(500).json({ msg: "Error, please try later.", error });
       }
-      res.status(200).send("Post updated");
+      res.status(200).json(result.rows[0]);
     });
   } catch (error) {
     res.status(500).json({ msg: "Error, please try later.", error });
@@ -61,23 +72,6 @@ module.exports.deletePost = (req, res) => {
         return res.status(500).json({ msg: "Error, please try later.", error });
       }
       res.status(200).send("Post deleted");
-    });
-  } catch (error) {
-    res.status(500).json({ msg: "Error, please try later.", error });
-  }
-};
-
-module.exports.getPostByAuthor = (req, res) => {
-  try {
-    const { author } = req.params;
-
-    const query = `SELECT * FROM posts WHERE author ILIKE '${author}'`;
-    db.query(query, (error, result) => {
-      if (error) {
-        console.log(error);
-        return res.status(500).json({ msg: "Error, please try later.", error });
-      }
-      res.status(200).json({ count: result.rowCount, posts: result.rows });
     });
   } catch (error) {
     res.status(500).json({ msg: "Error, please try later.", error });

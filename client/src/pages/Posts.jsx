@@ -4,6 +4,7 @@ import * as variants from "../constants/framerMotion"
 import * as api from "../api/api.routes";
 import {useQuery} from "react-query"
 import { deletePost } from "../api/api.routes";
+import { Link } from "react-router-dom";
 
 
 
@@ -101,7 +102,7 @@ const Posts = () => {
                             })}
                         </ul>
                         <div className="w-full flex justify-between mt-2">
-                            <span>{post.author}</span>
+                            <Link to={"/profile/" + post.author}>{post.author}</Link>
                             <span>{post.date_of_creation}</span>
                         </div>
                     </motion.article>

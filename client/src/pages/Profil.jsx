@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { getPostByAuthor } from "../api/api.routes";
 
 const Profil = () => {
-    const {id} = useParams()
+    const {userId, postId} = useParams()
     const navigate = useNavigate()
     const location = useLocation()
     const [details, setDetails] = useState({
@@ -12,11 +12,13 @@ const Profil = () => {
         likes: false,
         followers: false
     })
-    const queryKey = ['user', id]
-    const {data: user, refetch} = useQuery(queryKey, () => getPostByAuthor(id))
-
+    const queryKey = ['user']
+    const {data: user, refetch} = useQuery(queryKey, () => getPostByAuthor(userId), {
+        refetchOnWindowFocus: false
+    })
     const contextProps = {
-        id: id,
+        userId,
+        postId,
         posts: user?.data.posts
     }
 
